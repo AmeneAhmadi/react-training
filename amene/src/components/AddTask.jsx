@@ -1,21 +1,27 @@
-import { useState, useEffect } from "react";
+import { useState, useRef, useEffect } from "react";
 import PropTypes from "prop-types";
-const AddTask = (props) => {
-  //props
-  const { isDarkMode, hideAddTaskModal, onAddTask, onEditTask, editingTask } =
-    props;
-    
+const AddTask = ({
+  isDarkMode,
+  hideAddTaskModal,
+  onAddTask,
+  onEditTask,
+  editingTask,
+}) => {
   //=======================================================================
   //state
-  const [task, setTask] = useState(editingTask ? editingTask.text : "");
-
+  const [task, setTask] = useState(editingTask ? editingTask.title : "");
   //=======================================================================
-  // Update task when editingTask changes
+  //ref
+  const inputRef = useRef(null);
+  //=======================================================================
+  //focus on input when component mounts
   useEffect(() => {
-    editingTask ? setTask(editingTask.title) : setTask("");
-  }, [editingTask]);
-
+    if (inputRef.current) {
+      inputRef.current.focus();
+    }
+  }, []);
   //=======================================================================
+
   //add task
   const submitTask = (e) => {
     e.preventDefault();
@@ -52,6 +58,7 @@ const AddTask = (props) => {
         <input
           type="text"
           value={task}
+          ref={inputRef}
           onChange={handleTaskChange}
           className={`${
             isDarkMode
@@ -80,6 +87,9 @@ const AddTask = (props) => {
 };
 
 export default AddTask;
+
+//=======================================================================
+//props types
 AddTask.propTypes = {
   isDarkMode: PropTypes.bool,
   hideAddTaskModal: PropTypes.func,

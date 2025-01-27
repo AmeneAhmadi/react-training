@@ -1,12 +1,13 @@
 import PropTypes from "prop-types";
 import IconButton from "./IconButton";
 import checkIcon from "../assets/icons/checked.svg";
-const TaskItem = (props) => {
-  //=======================================================================
-  //props
-  const { task, isDarkMode, toggleComplete, editTaskAndShowModal, deleteTask } =
-    props;
-
+const TaskItem = ({
+  task,
+  isDarkMode,
+  toggleComplete,
+  editTaskAndShowModal,
+  deleteTask,
+}) => {
   //=======================================================================
   //class of task item to simplify code
   const taskClass = `${
@@ -37,11 +38,13 @@ const TaskItem = (props) => {
             onClick={() => editTaskAndShowModal(task)}
             icon="/icons/edit.svg"
             hoverIcon="/icons/edit-violet.svg"
+            altText="edit"
           />
           <IconButton
             onClick={() => deleteTask(task.id)}
             icon="/icons/trash.svg"
             hoverIcon="/icons/trash-red.svg"
+            altText="delete"
           />
         </div>
       </div>
@@ -49,6 +52,7 @@ const TaskItem = (props) => {
   );
 };
 export default TaskItem;
+
 //=======================================================================
 //props types
 TaskItem.propTypes = {

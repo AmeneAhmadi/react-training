@@ -1,24 +1,37 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import AddTask from "./AddTask";
 import TaskItem from "./TaskItem";
 import addIcon from "../assets/icons/add.svg";
 
-const TaskList = (props) => {
-  //=======================================================================
-  //props
-  const { isDarkMode, filter, searchText } = props;
+//=======================================================================
+//load from local storage
+const getInitialTasks = () => {
+  const data = JSON.parse(localStorage.getItem("tasks"));
+  return data ? data : [];
+};
+//=======================================================================
+
+const TaskList = ({ isDarkMode, filter, searchText }) => {
   //=======================================================================
   //states
   const [isAddTaskModalOpen, setIsAddTaskModalOpen] = useState(false); //show or hide add task modal
-  const [tasks, setTasks] = useState([]); //tasks , this state is used to store and maintain tasks
+  const [tasks, setTasks] = useState(getInitialTasks); //tasks , this state is used to store and maintain tasks
   const [editingTask, setEditingTask] = useState(null); //edit task, this state is used to edit tasks
 
   //=======================================================================
-  //show or hide add task modal
+  //save to local storage
+  useEffect(() => {
+    localStorage.setItem("tasks", JSON.stringify(tasks));
+  }, [tasks]);
+
+  //=======================================================================
+  //show add task modal
   const showAddTaskModal = () => {
     setIsAddTaskModalOpen(true);
   };
+
+  //hide add task modal
   const hideAddTaskModal = () => {
     setIsAddTaskModalOpen(false);
   };
@@ -31,15 +44,17 @@ const TaskList = (props) => {
   };
 
   //=======================================================================
-  //edit task
+  //edit tasks after getting edited task from AddTask modal
   const editTask = (updatedTask) => {
-    setTasks(
-      tasks.map((task) => (task.id === updatedTask.id ? updatedTask : task))
+    setTasks((prev) =>
+      prev.map((task) => (task.id === updatedTask.id ? updatedTask : task))
     );
     setEditingTask(null);
     hideAddTaskModal(); //hide add task modal
   };
 
+  //=======================================================================
+  //select the task and show modal to edit it when edit button clicked
   const editTaskAndShowModal = (task) => {
     setEditingTask(task);
     showAddTaskModal();
@@ -48,14 +63,14 @@ const TaskList = (props) => {
   //=======================================================================
   //delete task
   const deleteTask = (taskId) => {
-    setTasks(tasks.filter((task) => task.id !== taskId));
+    setTasks((prev) => prev.filter((task) => task.id !== taskId));
   };
 
   //=======================================================================
   //toggle complete task
   const toggleComplete = (taskId) => {
-    setTasks(
-      tasks.map((task) =>
+    setTasks((prev) =>
+      prev.map((task) =>
         task.id === taskId ? { ...task, completed: !task.completed } : task
       )
     );
@@ -75,6 +90,7 @@ const TaskList = (props) => {
 
     return filterMatchedTasks && searchMatchedTasks;
   });
+  
   //=======================================================================
 
   return (
@@ -118,6 +134,7 @@ const TaskList = (props) => {
   );
 };
 export default TaskList;
+
 //=======================================================================
 //props types
 TaskList.propTypes = {

@@ -1,11 +1,6 @@
 import PropTypes from "prop-types";
 
-const FilterButton = (props) => {
-  //=======================================================================
-  //props
-  const { onClick, value } = props;
-  //=======================================================================
-
+const FilterButton = ({ onClick, value }) => {
   return (
     <button
       onClick={onClick}
@@ -16,6 +11,7 @@ const FilterButton = (props) => {
   );
 };
 export default FilterButton;
+
 //=======================================================================
 //props types
 FilterButton.propTypes = {
