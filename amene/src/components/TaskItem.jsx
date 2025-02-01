@@ -1,13 +1,19 @@
+import { useContext } from "react";
+import { ThemeContext } from "../contexts/ThemeContext";
 import PropTypes from "prop-types";
 import IconButton from "./IconButton";
 import checkIcon from "../assets/icons/checked.svg";
+
 const TaskItem = ({
   task,
-  isDarkMode,
   toggleComplete,
   editTaskAndShowModal,
   deleteTask,
 }) => {
+  //=======================================================================
+  //theme
+  const { isDarkMode } = useContext(ThemeContext);
+
   //=======================================================================
   //class of task item to simplify code
   const taskClass = `${

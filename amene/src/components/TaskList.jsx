@@ -12,7 +12,7 @@ const getInitialTasks = () => {
 };
 //=======================================================================
 
-const TaskList = ({ isDarkMode, filter, searchText }) => {
+const TaskList = ({ filter, searchText }) => {
   //=======================================================================
   //states
   const [isAddTaskModalOpen, setIsAddTaskModalOpen] = useState(false); //show or hide add task modal
@@ -26,11 +26,6 @@ const TaskList = ({ isDarkMode, filter, searchText }) => {
   }, [tasks]);
 
   //=======================================================================
-  //show add task modal
-  const showAddTaskModal = () => {
-    setIsAddTaskModalOpen(true);
-  };
-
   //hide add task modal
   const hideAddTaskModal = () => {
     setIsAddTaskModalOpen(false);
@@ -57,7 +52,7 @@ const TaskList = ({ isDarkMode, filter, searchText }) => {
   //select the task and show modal to edit it when edit button clicked
   const editTaskAndShowModal = (task) => {
     setEditingTask(task);
-    showAddTaskModal();
+    setIsAddTaskModalOpen(true); //show add task modal
   };
 
   //=======================================================================
@@ -90,7 +85,7 @@ const TaskList = ({ isDarkMode, filter, searchText }) => {
 
     return filterMatchedTasks && searchMatchedTasks;
   });
-  
+
   //=======================================================================
 
   return (
@@ -102,7 +97,6 @@ const TaskList = ({ isDarkMode, filter, searchText }) => {
             <TaskItem
               key={task.id}
               task={task}
-              isDarkMode={isDarkMode}
               toggleComplete={toggleComplete}
               editTaskAndShowModal={editTaskAndShowModal}
               deleteTask={deleteTask}
@@ -112,7 +106,9 @@ const TaskList = ({ isDarkMode, filter, searchText }) => {
       </div>
       <div className="self-end p-10 fixed bottom-4">
         <button
-          onClick={showAddTaskModal}
+          onClick={() => {
+            setIsAddTaskModalOpen(true);
+          }}
           className="bg-[#6c63ff] p-3 rounded-full relative group hover:bg-[#534cc2] transition-colors duration-300"
         >
           <span className="absolute inset-0 rounded-full border-[2px] border-[#6c63ff] scale-95 opacity-0 transition-all duration-300 group-hover:opacity-100 group-hover:scale-100"></span>
@@ -123,7 +119,6 @@ const TaskList = ({ isDarkMode, filter, searchText }) => {
       {/* add to do */}
       {isAddTaskModalOpen && (
         <AddTask
-          isDarkMode={isDarkMode}
           hideAddTaskModal={hideAddTaskModal}
           onAddTask={addTask}
           onEditTask={editTask}

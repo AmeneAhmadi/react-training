@@ -1,19 +1,11 @@
+import { useContext } from "react";
+import { ThemeContext } from "../contexts/ThemeContext";
 import PropTypes from "prop-types";
-const Search = ({ isDarkMode, onSearchChange }) => {
+const Search = ({ onSearchChange }) => {
   //=======================================================================
-  //send search text to parent when text changes
-  const handleInputChange = (e) => {
-    onSearchChange(e.target.value);
-  };
-  //=======================================================================
+  //theme
+  const { isDarkMode } = useContext(ThemeContext);
 
-  // Send search text to parent when the search icon is clicked
-  // const handleSearchClick = () => {
-  //   const inputElement = document.getElementById("searchInput");
-  //   if (inputElement) {
-  //     onSearchChange(inputElement.value);
-  //   }
-  // };
   //=======================================================================
   return (
     <div
@@ -23,7 +15,7 @@ const Search = ({ isDarkMode, onSearchChange }) => {
     >
       <input
         id="searchInput"
-        onChange={handleInputChange}
+        onChange={(e)=>{onSearchChange(e.target.value)}}
         type="text"
         className={`${
           isDarkMode
@@ -36,14 +28,12 @@ const Search = ({ isDarkMode, onSearchChange }) => {
         <img
           src="./src/assets/icons/magnifier-dark-mode.svg"
           alt="search"
-          // onClick={handleSearchClick}
           className="cursor-pointer"
         />
       ) : (
         <img
           src="./src/assets/icons/magnifier-light-mode.svg"
           alt="search"
-          // onClick={handleSearchClick}
           className="cursor-pointer"
         />
       )}

@@ -1,7 +1,7 @@
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, useContext } from "react";
+import { ThemeContext } from "../contexts/ThemeContext";
 import PropTypes from "prop-types";
 const AddTask = ({
-  isDarkMode,
   hideAddTaskModal,
   onAddTask,
   onEditTask,
@@ -21,7 +21,10 @@ const AddTask = ({
     }
   }, []);
   //=======================================================================
+  //theme
+  const { isDarkMode } = useContext(ThemeContext);
 
+  //=======================================================================
   //add task
   const submitTask = (e) => {
     e.preventDefault();

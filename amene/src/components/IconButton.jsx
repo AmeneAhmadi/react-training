@@ -13,6 +13,7 @@ const IconButton = ({ onClick, icon, hoverIcon, altText }) => {
       onMouseEnter={() => setCurrentIcon(hoverIcon)}
       onMouseLeave={() => setCurrentIcon(icon)}
       className=" bg-no-repeat bg-center bg-cover w-[18px] h-[18px]"
+      title={altText}
     >
       <img
         src={currentIcon}
