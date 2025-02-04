@@ -1,22 +1,37 @@
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import PropTypes from "prop-types";
 import FilterButton from "./FilterButton";
 const FilterTasks = ({ handleFilterChange, filter }) => {
-  //=======================================================================
-  //states
   const [isFilterDropdownOpen, setIsFilterDropdownOpen] = useState(false); //show or hide filter dropdown
+  const dropdownRef = useRef(null);
 
-  //=======================================================================
-  // change filter
+  useEffect(() => {
+    function handleClickOutside(e) {
+      if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
+        setIsFilterDropdownOpen(false);
+      }
+    }
+
+    if (isFilterDropdownOpen) {
+      document.addEventListener("mousedown", handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [isFilterDropdownOpen]);
+
   const handleFilterClick = (value) => {
-    handleFilterChange(value); //send value of filter to parent
-    setIsFilterDropdownOpen(false); // close dropdown after selection
+    handleFilterChange(value);
+    setIsFilterDropdownOpen(false);
   };
-  //=======================================================================
+
   return (
-    <div className="relative">
+    <div ref={dropdownRef} className="relative">
       <button
-        onClick={()=>{setIsFilterDropdownOpen((prev) => !prev)}}
+        onClick={() => {
+          setIsFilterDropdownOpen((prev) => !prev);
+        }}
         title="Filter Tasks"
         className="flex justify-between items-center uppercase text-white p-[10px] bg-[#6c63ff] gap-2 w-32 rounded-md hover:shadow-inner hover:bg-[#534cc2]  hover:shadow-[#6c63ff] "
       >
@@ -41,8 +56,6 @@ const FilterTasks = ({ handleFilterChange, filter }) => {
 };
 export default FilterTasks;
 
-//=======================================================================
-//props types
 FilterTasks.propTypes = {
   handleFilterChange: PropTypes.func,
   filter: PropTypes.string,

@@ -10,17 +10,13 @@ const TaskItem = ({
   editTaskAndShowModal,
   deleteTask,
 }) => {
-  //=======================================================================
-  //theme
-  const { isDarkMode } = useContext(ThemeContext);
+  const { isDarkMode } = useContext(ThemeContext); //theme
 
-  //=======================================================================
   //class of task item to simplify code
   const taskClass = `${
     isDarkMode ? "text-white" : "text-black"
   } Kanit-Medium uppercase ${task.completed ? "line-through opacity-50" : ""}`;
 
-  //=======================================================================
   return (
     <li key={task.id}>
       <div className="border-b py-4 border-[#6c63ff] w-[525px] flex justify-between items-center">
@@ -59,8 +55,6 @@ const TaskItem = ({
 };
 export default TaskItem;
 
-//=======================================================================
-//props types
 TaskItem.propTypes = {
   isDarkMode: PropTypes.bool,
   editTaskAndShowModal: PropTypes.func,

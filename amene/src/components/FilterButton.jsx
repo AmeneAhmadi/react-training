@@ -12,8 +12,6 @@ const FilterButton = ({ onClick, value }) => {
 };
 export default FilterButton;
 
-//=======================================================================
-//props types
 FilterButton.propTypes = {
   onClick: PropTypes.func,
   value: PropTypes.string,

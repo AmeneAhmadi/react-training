@@ -2,11 +2,8 @@ import { useContext } from "react";
 import { ThemeContext } from "../contexts/ThemeContext";
 import PropTypes from "prop-types";
 const Search = ({ onSearchChange }) => {
-  //=======================================================================
-  //theme
-  const { isDarkMode } = useContext(ThemeContext);
+  const { isDarkMode } = useContext(ThemeContext);//theme
 
-  //=======================================================================
   return (
     <div
       className={`${
@@ -43,8 +40,6 @@ const Search = ({ onSearchChange }) => {
 
 export default Search;
 
-//=======================================================================
-//props types
 Search.propTypes = {
   isDarkMode: PropTypes.bool,
   onSearchChange: PropTypes.func,

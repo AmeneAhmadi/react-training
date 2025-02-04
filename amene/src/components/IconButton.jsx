@@ -2,10 +2,7 @@ import { useState } from "react";
 import PropTypes from "prop-types";
 
 const IconButton = ({ onClick, icon, hoverIcon, altText }) => {
-  //=======================================================================
-  //state
-  const [currentIcon, setCurrentIcon] = useState(icon);
-  //=======================================================================
+  const [currentIcon, setCurrentIcon] = useState(icon);//handle icon
 
   return (
     <button
@@ -25,8 +22,6 @@ const IconButton = ({ onClick, icon, hoverIcon, altText }) => {
 };
 export default IconButton;
 
-//=======================================================================
-//props types
 IconButton.propTypes = {
   onClick: PropTypes.func,
   icon: PropTypes.string,

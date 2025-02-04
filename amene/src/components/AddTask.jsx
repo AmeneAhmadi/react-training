@@ -1,31 +1,17 @@
 import { useState, useRef, useEffect, useContext } from "react";
 import { ThemeContext } from "../contexts/ThemeContext";
 import PropTypes from "prop-types";
-const AddTask = ({
-  hideAddTaskModal,
-  onAddTask,
-  onEditTask,
-  editingTask,
-}) => {
-  //=======================================================================
-  //state
+const AddTask = ({ hideAddTaskModal, onAddTask, onEditTask, editingTask }) => {
   const [task, setTask] = useState(editingTask ? editingTask.title : "");
-  //=======================================================================
-  //ref
-  const inputRef = useRef(null);
-  //=======================================================================
-  //focus on input when component mounts
+  const inputRef = useRef(null); //used for focus on input when component mounts
   useEffect(() => {
     if (inputRef.current) {
       inputRef.current.focus();
     }
   }, []);
-  //=======================================================================
-  //theme
-  const { isDarkMode } = useContext(ThemeContext);
 
-  //=======================================================================
-  //add task
+  const { isDarkMode } = useContext(ThemeContext); //theme
+
   const submitTask = (e) => {
     e.preventDefault();
     editingTask
@@ -33,14 +19,13 @@ const AddTask = ({
       : onAddTask({ id: Date.now(), title: task, completed: false });
     setTask("");
   };
-  //=======================================================================
+
   //updating task title while writing in input
   const handleTaskChange = (e) => {
     e.preventDefault();
     setTask(e.target.value);
   };
 
-  //=======================================================================
   return (
     <div className="flex justify-center w-full h-full fixed top-0 left-0">
       <div className="fixed top-0 left-0 w-full h-full bg-black bg-opacity-70 z-2"></div>
@@ -91,8 +76,6 @@ const AddTask = ({
 
 export default AddTask;
 
-//=======================================================================
-//props types
 AddTask.propTypes = {
   isDarkMode: PropTypes.bool,
   hideAddTaskModal: PropTypes.func,
