@@ -6,19 +6,9 @@ const FilterTasks = ({ handleFilterChange, filter }) => {
   const dropdownRef = useRef(null);
 
   useEffect(() => {
-    function handleClickOutside(e) {
-      if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
-        setIsFilterDropdownOpen(false);
-      }
+    if (isFilterDropdownOpen && dropdownRef.current) {
+      dropdownRef.current.focus(); // focus on dropdown to enable onBlur event
     }
-
-    if (isFilterDropdownOpen) {
-      document.addEventListener("mousedown", handleClickOutside);
-    }
-
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
   }, [isFilterDropdownOpen]);
 
   const handleFilterClick = (value) => {
@@ -27,11 +17,9 @@ const FilterTasks = ({ handleFilterChange, filter }) => {
   };
 
   return (
-    <div ref={dropdownRef} className="relative">
+    <div className="relative">
       <button
-        onClick={() => {
-          setIsFilterDropdownOpen((prev) => !prev);
-        }}
+        onClick={() => setIsFilterDropdownOpen((prev) => !prev)}
         title="Filter Tasks"
         className="flex justify-between items-center uppercase text-white p-[10px] bg-[#6c63ff] gap-2 w-32 rounded-md hover:shadow-inner hover:bg-[#534cc2]  hover:shadow-[#6c63ff] "
       >
@@ -39,7 +27,12 @@ const FilterTasks = ({ handleFilterChange, filter }) => {
         <img src="./src/assets/icons/chevron-top.svg" alt="chevron" />
       </button>
       {isFilterDropdownOpen && (
-        <div className="flex flex-col items-start gap-2 absolute top-full border border-[#6c63ff] w-32 bg-white rounded-md z-2">
+        <div
+          ref={dropdownRef}
+          tabIndex={0}
+          onBlur={() => setIsFilterDropdownOpen(false)}
+          className="flex flex-col items-start gap-2 absolute top-full border border-[#6c63ff] w-32 bg-white rounded-md z-2"
+        >
           <FilterButton value="all" onClick={() => handleFilterClick("all")} />
           <FilterButton
             value="complete"
