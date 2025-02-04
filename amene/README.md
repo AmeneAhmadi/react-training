@@ -1,3 +1,8 @@
 # React + Vite
 
-Todo List App with search and filter tasks
+
+Todo List program with these features:
+
+Search and filter todos 
+
+Change the theme
