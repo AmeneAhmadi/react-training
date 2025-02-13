@@ -1,21 +1,13 @@
 import { useContext } from "react";
 import { ThemeContext } from "../contexts/ThemeContext";
+import { TaskContext } from "../contexts/TaskContext";
 import PropTypes from "prop-types";
 import IconButton from "./IconButton";
 import checkIcon from "../assets/icons/checked.svg";
 
-const TaskItem = ({
-  task,
-  toggleComplete,
-  editTaskAndShowModal,
-  deleteTask,
-}) => {
-  const { isDarkMode } = useContext(ThemeContext); //theme
-
-  //class of task item to simplify code
-  const taskClass = `${
-    isDarkMode ? "text-white" : "text-black"
-  } Kanit-Medium uppercase ${task.completed ? "line-through opacity-50" : ""}`;
+const TaskItem = ({ task, editTaskAndShowModal }) => {
+  const { isDarkMode } = useContext(ThemeContext);
+  const { deleteTask, toggleComplete } = useContext(TaskContext);
 
   return (
     <li key={task.id}>
@@ -33,7 +25,15 @@ const TaskItem = ({
               <img className="mb-[2px]" src={checkIcon} alt="checked" />
             )}
           </div>
-          <span className={taskClass}>{task.title}</span>
+          <span
+            className={`${
+              isDarkMode ? "text-white" : "text-black"
+            } Kanit-Medium uppercase ${
+              task.completed ? "line-through opacity-50" : ""
+            }`}
+          >
+            {task.title}
+          </span>
         </button>
         <div className="flex gap-2 items-center me-1">
           <IconButton
@@ -56,9 +56,6 @@ const TaskItem = ({
 export default TaskItem;
 
 TaskItem.propTypes = {
-  isDarkMode: PropTypes.bool,
-  editTaskAndShowModal: PropTypes.func,
-  deleteTask: PropTypes.func,
-  toggleComplete: PropTypes.func,
   task: PropTypes.object,
+  editTaskAndShowModal: PropTypes.func,
 };

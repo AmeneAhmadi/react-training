@@ -1,16 +1,17 @@
 import { useState, useRef, useEffect, useContext } from "react";
 import { ThemeContext } from "../contexts/ThemeContext";
 import PropTypes from "prop-types";
+
 const AddTask = ({ hideAddTaskModal, onAddTask, onEditTask, editingTask }) => {
   const [task, setTask] = useState(editingTask ? editingTask.title : "");
-  const inputRef = useRef(null); //used for focus on input when component mounts
+  const { isDarkMode } = useContext(ThemeContext);
+  const inputRef = useRef(null);
+
   useEffect(() => {
     if (inputRef.current) {
       inputRef.current.focus();
     }
   }, []);
-
-  const { isDarkMode } = useContext(ThemeContext); //theme
 
   const submitTask = (e) => {
     e.preventDefault();
@@ -77,7 +78,6 @@ const AddTask = ({ hideAddTaskModal, onAddTask, onEditTask, editingTask }) => {
 export default AddTask;
 
 AddTask.propTypes = {
-  isDarkMode: PropTypes.bool,
   hideAddTaskModal: PropTypes.func,
   onAddTask: PropTypes.func,
   onEditTask: PropTypes.func,

@@ -1,52 +1,14 @@
-import { useState, useEffect } from "react";
-import PropTypes from "prop-types";
+import { useState, useContext } from "react";
+import { TaskContext } from "../contexts/TaskContext";
 import AddTask from "./AddTask";
 import TaskItem from "./TaskItem";
 import addIcon from "../assets/icons/add.svg";
 
-//load from local storage
-const getInitialTasks = () => {
-  const data = JSON.parse(localStorage.getItem("tasks"));
-  return data ? data : [];
-};
-
-const TaskList = ({ filter, searchText }) => {
-  const [isAddTaskModalOpen, setIsAddTaskModalOpen] = useState(false); //show or hide add task modal
-  const [tasks, setTasks] = useState(getInitialTasks); //this state is used to store and maintain tasks
-  const [editingTask, setEditingTask] = useState(null); //this state is used to edit tasks
-
-  useEffect(() => {
-    localStorage.setItem("tasks", JSON.stringify(tasks)); //save to localStorage
-  }, [tasks]);
-
-  const hideAddTaskModal = () => {
-    setIsAddTaskModalOpen(false);
-  };
-
-  const addTask = (task) => {
-    setTasks([...tasks, task]);
-    hideAddTaskModal();
-  };
-
-  const editTask = (updatedTask) => {
-    setTasks((prev) =>
-      prev.map((task) => (task.id === updatedTask.id ? updatedTask : task))
-    );
-    setEditingTask(null);
-    hideAddTaskModal();
-  };
-
-  const deleteTask = (taskId) => {
-    setTasks((prev) => prev.filter((task) => task.id !== taskId));
-  };
-
-  const toggleComplete = (taskId) => {
-    setTasks((prev) =>
-      prev.map((task) =>
-        task.id === taskId ? { ...task, completed: !task.completed } : task
-      )
-    );
-  };
+const TaskList = () => {
+  const [isAddTaskModalOpen, setIsAddTaskModalOpen] = useState(false);
+  const [editingTask, setEditingTask] = useState(null);
+  const { tasks, addTask, editTask, filter, searchText } =
+    useContext(TaskContext);
 
   //select task to be updated
   const editTaskAndShowModal = (task) => {
@@ -72,16 +34,13 @@ const TaskList = ({ filter, searchText }) => {
 
   return (
     <>
-      {/* show to do list */}
       <div className="flex flex-col justify-center items-center">
         <ul>
           {filteredTasks.map((task) => (
             <TaskItem
               key={task.id}
               task={task}
-              toggleComplete={toggleComplete}
               editTaskAndShowModal={editTaskAndShowModal}
-              deleteTask={deleteTask}
             />
           ))}
         </ul>
@@ -97,13 +56,20 @@ const TaskList = ({ filter, searchText }) => {
           <img src={addIcon} alt="add" className="relative z-10" />
         </button>
       </div>
-
-      {/* add to do*/}
       {isAddTaskModalOpen && (
         <AddTask
-          hideAddTaskModal={hideAddTaskModal}
-          onAddTask={addTask}
-          onEditTask={editTask}
+          hideAddTaskModal={() => {
+            setIsAddTaskModalOpen(false);
+          }}
+          onAddTask={(task) => {
+            addTask(task);
+            setIsAddTaskModalOpen(false);
+          }}
+          onEditTask={(updateTask) => {
+            editTask(updateTask);
+            setEditingTask(null);
+            setIsAddTaskModalOpen(false);
+          }}
           editingTask={editingTask}
         />
       )}
@@ -111,9 +77,3 @@ const TaskList = ({ filter, searchText }) => {
   );
 };
 export default TaskList;
-
-TaskList.propTypes = {
-  isDarkMode: PropTypes.bool,
-  filter: PropTypes.string,
-  searchText: PropTypes.string,
-};

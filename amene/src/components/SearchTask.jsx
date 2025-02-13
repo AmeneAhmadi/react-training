@@ -1,8 +1,10 @@
 import { useContext } from "react";
 import { ThemeContext } from "../contexts/ThemeContext";
-import PropTypes from "prop-types";
-const Search = ({ onSearchChange }) => {
-  const { isDarkMode } = useContext(ThemeContext);//theme
+import { TaskContext } from "../contexts/TaskContext";
+
+const SearchTask = () => {
+  const { isDarkMode } = useContext(ThemeContext);
+  const { handleSearchChange } = useContext(TaskContext);
 
   return (
     <div
@@ -12,7 +14,9 @@ const Search = ({ onSearchChange }) => {
     >
       <input
         id="searchInput"
-        onChange={(e)=>{onSearchChange(e.target.value)}}
+        onChange={(e) => {
+          handleSearchChange(e.target.value);
+        }}
         type="text"
         className={`${
           isDarkMode
@@ -38,9 +42,4 @@ const Search = ({ onSearchChange }) => {
   );
 };
 
-export default Search;
-
-Search.propTypes = {
-  isDarkMode: PropTypes.bool,
-  onSearchChange: PropTypes.func,
-};
+export default SearchTask;

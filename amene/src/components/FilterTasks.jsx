@@ -1,15 +1,11 @@
-import { useState, useRef, useEffect } from "react";
-import PropTypes from "prop-types";
+import { useState, useRef, useContext } from "react";
+import { TaskContext } from "../contexts/TaskContext";
 import FilterButton from "./FilterButton";
-const FilterTasks = ({ handleFilterChange, filter }) => {
-  const [isFilterDropdownOpen, setIsFilterDropdownOpen] = useState(false); //show or hide filter dropdown
-  const dropdownRef = useRef(null);
 
-  useEffect(() => {
-    if (isFilterDropdownOpen && dropdownRef.current) {
-      dropdownRef.current.focus(); // focus on dropdown to enable onBlur event
-    }
-  }, [isFilterDropdownOpen]);
+const FilterTasks = () => {
+  const [isFilterDropdownOpen, setIsFilterDropdownOpen] = useState(false);
+  const { filter, handleFilterChange } = useContext(TaskContext);
+  const dropdownRef = useRef(null);
 
   const handleFilterClick = (value) => {
     handleFilterChange(value);
@@ -17,7 +13,13 @@ const FilterTasks = ({ handleFilterChange, filter }) => {
   };
 
   return (
-    <div className="relative">
+    <div
+      className="relative"
+      onBlur={(e) => {
+        if (e.relatedTarget?.parentNode !== dropdownRef.current)
+          setIsFilterDropdownOpen(false);
+      }}
+    >
       <button
         onClick={() => setIsFilterDropdownOpen((prev) => !prev)}
         title="Filter Tasks"
@@ -29,8 +31,6 @@ const FilterTasks = ({ handleFilterChange, filter }) => {
       {isFilterDropdownOpen && (
         <div
           ref={dropdownRef}
-          tabIndex={0}
-          onBlur={() => setIsFilterDropdownOpen(false)}
           className="flex flex-col items-start gap-2 absolute top-full border border-[#6c63ff] w-32 bg-white rounded-md z-2"
         >
           <FilterButton value="all" onClick={() => handleFilterClick("all")} />
@@ -48,8 +48,3 @@ const FilterTasks = ({ handleFilterChange, filter }) => {
   );
 };
 export default FilterTasks;
-
-FilterTasks.propTypes = {
-  handleFilterChange: PropTypes.func,
-  filter: PropTypes.string,
-};
